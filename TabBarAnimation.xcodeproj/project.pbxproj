@@ -16,6 +16,7 @@
 		57B6794326B9780700151B2F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794226B9780700151B2F /* HomeView.swift */; };
 		57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */; };
 		57B6794726BAF13400151B2F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794626BAF13400151B2F /* Constants.swift */; };
+		CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD2991D2719C57F003CF50F /* TabBasinView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewComponents.swift; sourceTree = "<group>"; };
 		57B6794626BAF13400151B2F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		57B6794826BBDFAB00151B2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CCD2991D2719C57F003CF50F /* TabBasinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBasinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				57754F7026BD9B690028F139 /* SubBarView.swift */,
 				57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */,
 				57B6794626BAF13400151B2F /* Constants.swift */,
+				CCD2991D2719C57F003CF50F /* TabBasinView.swift */,
 			);
 			path = TabBarAnimation;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 				57B6794326B9780700151B2F /* HomeView.swift in Sources */,
 				57B6793626B977D700151B2F /* ContentView.swift in Sources */,
 				57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */,
+				CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */,
 				57754F7426BD9F940028F139 /* IconBar.swift in Sources */,
 				57B6793426B977D700151B2F /* TabBarAnimationApp.swift in Sources */,
 				57754F7126BD9B690028F139 /* SubBarView.swift in Sources */,

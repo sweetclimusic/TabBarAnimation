@@ -12,7 +12,7 @@ struct TabBarButton: View {
     var tabItem: TabItem
     var body: some View {
         Button(action: {
-            withAnimation(.spring()){
+            withAnimation(.easeInOut(duration: 0.5)){
                 selected = tabItem.name
             }
         },
@@ -83,6 +83,7 @@ struct NewMediaButton: View {
         )
         .offset(y: positionY)
     }
+    /// I use this to monitor the completion percentage on the  animation along its timeline of the newbutton Y transform. When it has ended I set the position to Y and allow SwiftUI to render the animation transition.
     func updatePosition(percentage pct: CGFloat, duration: Double) {
         // Sneak back to p1. This is a code smell.
         if pct == 0 {
@@ -92,7 +93,9 @@ struct NewMediaButton: View {
          }
         }
     }
+    
 }
+
 struct TransformButtonOffset: GeometryEffect {
     var offsetPositionY : CGFloat
     var pct: CGFloat

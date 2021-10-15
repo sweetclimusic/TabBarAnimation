@@ -83,7 +83,7 @@ struct Home: View {
                     height: tabBarButtonHeight,
                     alignment: .bottom)
           )
-            if showNewMediaItems {
+            if !showNewMediaItems { //code smell, don't like this inverse logic
                 HStack(spacing: 0){
                     ForEach(tabItems, id: \.self) { tab in
                         TabBarButton(selected: $selected, tabItem: tab)
