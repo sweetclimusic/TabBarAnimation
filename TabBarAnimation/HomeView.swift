@@ -11,6 +11,7 @@ import SwiftUI
 /// to allow the image type to conform to Hasable
 /// 1) we can either ignore image and define the func hash
 /// 2) create a computed property of the image, thus we add the additional property imageName.
+//  TODO: look into @viewbuilder if this qualifies as something that should now be viewbuilder
 struct TabItem: Hashable {
     let id: UUID
     var image: Image{
@@ -30,6 +31,7 @@ struct TabItem: Hashable {
     func fill() -> String {
         "\(tabIcon.rawValue).fill"
     }
+    
     func imageWithFallBack(primary: TabIcon, fallback: TabIcon) -> Image {
         var image = Image(systemName: primary.rawValue)
         if image != nil {
@@ -44,7 +46,7 @@ struct Home: View {
         TabItem(systemImageName: "square.and.arrow.up", "Share"),
         TabItem(systemImageName: "arrow.triangle.merge", "Merge")]
     @State private var selected:String = "Home"
-    @State var showNewMediaItems: Bool = false
+    @State var showNewMediaItems: Bool = true
     @State var buttonRotation: Double = 0
     @State var buttonPosition: CGFloat = 0
     //Defined to hide the default tabbar yet allows programmable switching between tabitems
@@ -52,7 +54,7 @@ struct Home: View {
         UITabBar.appearance().isHidden = true
     }
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 0) { //TODO: Might be wrong stack
             TabView(selection: $selected){
                 // accepted type for a Tabviews are Text and Image. All other types are assigned but not reneder
                 // We can use our custom type to allow programmable switching of tabs
@@ -60,8 +62,10 @@ struct Home: View {
                 SolidTabView(color: .purple, tab: tabItems[1].name)
                 SolidTabView(color: .yellow, tab: tabItems[2].name)
                 
-            }.overlay(
-            //MARK: Things I want from Geometry Reader I want to get the bottom of the Tab view or the top of the custom Tabbar and it's mid point to place the NewMedia Button relative to it
+            }
+            //TODO: Lift Overlay as we don't want it animating with
+            .overlay(
+            //MARK: Things I want from Geometry Reader, I want to get the bottom of the Tab view or the top of the custom Tabbar and it's mid point to place the NewMedia Button relative to it
             GeometryReader{ reader in
                 let globalCoord = reader.frame(in: .global)
                 /// positioning the Plus button correctly requires a ZStack
@@ -83,11 +87,11 @@ struct Home: View {
                     height: tabBarButtonHeight,
                     alignment: .bottom)
           )
-            if !showNewMediaItems { //code smell, don't like this inverse logic
+            if showNewMediaItems {
                 HStack(spacing: 0){
                     ForEach(tabItems, id: \.self) { tab in
                         TabBarButton(selected: $selected, tabItem: tab)
-                        //Add a Spacer to the HStack so long as we have tab items
+                            //Add a Spacer to the HStack so long as we have tab items
                         if tab != tabItems.last {
                             Spacer(minLength: 0)
                         }
@@ -95,22 +99,41 @@ struct Home: View {
                     .frame(width: 70, height: tabBarButtonHeight)//set mininum size of Icon frams
                     
                 }.padding(.horizontal, 25)
-                .padding(.top)
-                //7 add a background and shadow to show a distance tabBar
-                // the shadow is added to the icons as well
-                // next the HStack and apply the background and shadow to the parent HStack if you wanted flat icons
-                .background(Color.white)
-                .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.1), radius: 2,
-                        x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
-                        y: -1)
+                    .padding(.top)
+                    //7 add a background and shadow to show a distance tabBar
+                    // the shadow is added to the icons as well
+                    // next the HStack and apply the background and shadow to the parent HStack if you wanted flat icons
+                    .background(Color.white)
+                    .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.1), radius: 2,
+                            x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
+                            y: -1)
             } else {
+                // offset and opacity not currently tracked as animatable
+                withAnimation{
                 SubBarView()
-                    .offset(y:-180)
-                .padding(.horizontal, 10)
-                .padding(.top)
+                    .offset(y: buttonPosition < 50 ? -200 : 0)
+                    .padding(.horizontal, 10)
+                    .padding(.top)
+                    .opacity(buttonPosition < 50 ? 1:0)
+                }
             }
             
-        }.ignoresSafeArea(.all, edges: .bottom)
+        }
+        .clipShape(
+            TabBasinView(gutter: 35, apex: 50)
+        )
+        //TODO: not quite right, missing button now?
+        .frame(width: .infinity, height: tabBarButtonHeight, alignment: .bottom)
+        .background(
+            Color(.gray)
+            .opacity(0.2)
+        )
+        .ignoresSafeArea(.all, edges: .bottom)
+//
+
+        
+        
+            
     }
 }
 

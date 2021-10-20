@@ -29,17 +29,17 @@ If we stare at the animation long enough we can easily breakdown the individual 
 2) There is a second submenu that appears on click of the 'plus' button
 3) There placement is equally displaced, the inner most icons have matching center Y points, and the outer icons Y center matches.
 4) The main tabbar disappears when the second tabbar is to appear
-5) The buttons of the second menu scale to full size during their interpolation
-6) Icons of the second buttons are not visible until the end of the animation, this gives the appearance of fluidity as they second tabbar 
-'bursts' into view
+5) The buttons of the second menu scale to full size during their interpolation to their positions.
+6) Icons of the second buttons are not visible until the end of the animation, this gives the appearance of fluidity as the second tabbar 'bursts' into view
 7) The plus button rotates clockwise
 8) the plus button moves passed its original start position during its return and the moves to its start position
 9) the plus button rotates the same amount for each animation(?)
-10) The curve path in the tabbar center point is animated Up. likely the inverse of the center point.
-11) it's color changed to match the background.
+10) The curve path is in the tabbar's center.
+11) The curve path has its center point animated(?)
+12) The curve path slightly goes pass its end point slightly before the animation ends
 
 Now that we have the quintessential steps needed to recreate this afformentioned tabbar, lets first create the core componets and views that represent our app.
-
+ 
 ## Tabbar Walkthrough
 
 ### Creating a custom tabbar
@@ -60,5 +60,5 @@ Now that we have the quintessential steps needed to recreate this afformentioned
 
 //Animation Breakdown
 
-when creating the animation for the new button, I had two states of the button to animate, the first being the offsetY and the rotation of the image. where I was able to animate the rotation quite easily as a views rotation angle is animatable by default. swiftUI will animate from one angle to the next for your. Ther problem surfaces when I wanted to animate the offset, changing the offset didn't work.
+when creating the animation for the new button, I had two states of the button to animate, the first being the offsetY and the rotation of the image. where I was able to animate the rotation quite easily as a views rotation angle is animatable by default. swiftUI will animate from one angle to the next for you. Ther problem surfaces when I wanted to animate the offset, changing the offset didn't work.
 
