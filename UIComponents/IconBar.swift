@@ -14,6 +14,7 @@ enum TabIcon: String {
     case Merge = "arrow.triangle.merge"
     case Share = "square.and.arrow.up"
     case Video = "video"
+    case Profile = "person"
     case none
 }
 
@@ -25,7 +26,7 @@ struct TabBarButtonStyle: ViewModifier{
     var paddingAmount: CGFloat = 0
     func body(content: Content) -> some View {
         content
-            .frame(width: width, height: height)//set mininum size of Icon frams
+            .frame(width: width, height: height)//set mininum size of Icon frame
             .background(Circle().foregroundColor(color)
                             .shadow(color: .black, radius: 1)
             )
@@ -36,7 +37,6 @@ struct TabBarButtonStyle: ViewModifier{
 
 struct IconBar: View {
     var items: [TabItem]
-    var iconBarHeight: CGFloat = 70
     var tabBarButtonStyle: TabBarButtonStyle
     @Binding var selected: String
     //StateObject

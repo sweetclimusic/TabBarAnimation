@@ -20,7 +20,8 @@ struct TabBarButton: View {
             tabItem.image
                     .resizable()
                     .renderingMode(.template)
-                    .frame(width: 26, height: 26)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 28, height: 28)
                     .foregroundColor(selected == tabItem.name ? .pink : .gray)
         })
     }

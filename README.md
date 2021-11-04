@@ -62,3 +62,7 @@ Now that we have the quintessential steps needed to recreate this afformentioned
 
 when creating the animation for the new button, I had two states of the button to animate, the first being the offsetY and the rotation of the image. where I was able to animate the rotation quite easily as a views rotation angle is animatable by default. swiftUI will animate from one angle to the next for you. Ther problem surfaces when I wanted to animate the offset, changing the offset didn't work.
 
+// Remaining Steps
+- 1. Animate path of arch to follow button
+- 2. Scale, opacity, and position animation for SubView icons
+- 3. Set Offset of SubView icons 

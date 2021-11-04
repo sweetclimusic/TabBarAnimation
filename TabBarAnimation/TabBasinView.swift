@@ -40,25 +40,9 @@ struct TabBasinView: Shape {
     
 }
 
-struct Basin: View {
-    var body: some View {
-        ZStack {
-            TabBasinView(gutter: 35, apex: 50)
-                .frame(
-                    width: .infinity,
-                    height: 50,
-                    alignment: .center)
-                .foregroundColor(
-                    Color(.white)
-                )
-            
-        }.ignoresSafeArea(.all)
-    }
-}
-
 struct TabBasinView_Previews: PreviewProvider {
     static var previews: some View {
-        Basin()
+        Home()
     }
 }
 
