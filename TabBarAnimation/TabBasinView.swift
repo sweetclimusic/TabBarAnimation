@@ -11,6 +11,7 @@ struct TabBasinView: Shape {
     var gutter: CGFloat
     var valley: CGFloat
     var position: CGFloat = 0
+    @Binding var buttonPosition: CGFloat
     @Binding var animate: Bool
     @State private var pct: CGFloat = 0
     var animatableData: AnimatablePair<CGFloat,CGFloat> {
@@ -54,28 +55,9 @@ struct TabBasinView: Shape {
     
 }
 
-struct Basin: View {
-    var positionY: CGFloat
-    @State var active: Bool
-    var body: some View {
-        ZStack {
-            
-            TabBasinView(gutter: 50, valley: 35, position: positionY,animate: $active)
-                .frame(
-                    width: .infinity,
-                    height: 150,
-                    alignment: .center)
-                .foregroundColor(
-                    Color(.red)
-                )
-            
-        }.ignoresSafeArea(.all)
-    }
-}
-
 struct TabBasinView_Previews: PreviewProvider {
     static var previews: some View {
-        Basin(positionY: 0.0, active: true )
+        Home()
     }
 }
 

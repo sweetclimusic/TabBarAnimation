@@ -21,9 +21,9 @@ struct TabItem: Hashable {
     let imageName: String
     let tabIcon: TabIcon
     
-    init(systemImageName image: String,systemImageName icon: TabIcon = TabIcon.none, _ name: String) {
+    init(tabIcon icon: TabIcon = .Home, _ name: String) {
         self.id = UUID()
-        self.imageName = image
+        self.imageName = icon.rawValue
         self.name = name
         self.tabIcon = icon
     }
@@ -34,13 +34,15 @@ struct TabItem: Hashable {
     
 }
 struct Home: View {
-    let tabItems: [TabItem] = [
-        TabItem(systemImageName: "house", "Home"),
-        TabItem(systemImageName: "square.and.arrow.up", "Share"),
-        TabItem(systemImageName: "arrow.triangle.merge", "Merge"),
-        TabItem(systemImageName: "person", "Profile")
-    ]
+    //globale namespace for matched geometry animations
+    @Namespace private var TabMenuID
     
+    let tabItems: [TabItem] = [
+        TabItem(tabIcon: TabIcon.Home, "Home"),
+        TabItem(tabIcon: TabIcon.Share, "Share"),
+        TabItem(tabIcon: TabIcon.Merge, "Merge"),
+        TabItem(tabIcon: TabIcon.Profile, "Profile")
+    ]
     let tabViewBGColor: [String:Color] = [
         "Home": Color.gray.opacity(0.33),
         "Share": Color.purple,
@@ -67,6 +69,7 @@ struct Home: View {
             GeometryReader{ reader in
                 let globalCoord = reader.frame(in: .global)
                 let tabBarTop = globalCoord.maxY
+                
                 ZStack {
                     HStack(spacing: 0) {
                         TabView(selection: $selected){
@@ -80,7 +83,36 @@ struct Home: View {
                                          tab: tabItems[3].name)
                         }
                     }
-                    
+                    // subMenus Contents
+                    VStack(spacing:0) {
+                        Spacer()
+                        if showNewMediaItems {
+                                // offset and opacity not currently tracked as animatable
+                            withAnimation{
+                                SubBarView(namespace: TabMenuID)
+                                //TODO : device has a safearea inset or not, adjust offset
+                                    .offset(y: buttonPosition < 50 ? -100 : 0)
+                                    .padding(.horizontal, 0)
+                                    .padding(.top)
+                                    .opacity(buttonPosition < 50 ? 1:0)
+                                    //.transition(<#T##t: AnyTransition##AnyTransition#>)
+                            }
+                        } else {
+                            withAnimation(
+                                .interactiveSpring(
+                                    response: 0.45,
+                                    dampingFraction: 0.35,
+                                    blendDuration: 0.25)) {
+                                   MenuBarView(
+                                    animatePath: $animatePath,
+                                    buttonPosition: $buttonPosition,
+                                    selected: $selected,
+                                    endAnimation: buttonPosition > 50 ? true : false,
+                                    namespace: TabMenuID
+                                   )
+                                }
+                        }
+                    }
                     HStack {
                         NewMediaButton(rotation:$buttonRotation,
                                        positionY: $buttonPosition,
@@ -90,71 +122,36 @@ struct Home: View {
                             .frame(width: tabBarButtonHeight,
                                    height: tabBarButtonHeight)
                             .position(x:globalCoord.width * 0.5,
-                                      y:tabBarTop * 0.98 )
+                                      y:tabBarTop * 0.84 )
                     }
                 }
             }
-            if showNewMediaItems {
-                    // offset and opacity not currently tracked as animatable
-                withAnimation{
-                    SubBarView()
-                        .offset(y: buttonPosition < 50 ? -200 : 0)
-                        .padding(.horizontal, 10)
-                        .padding(.top)
-                        .opacity(buttonPosition < 50 ? 1:0)
-                        //.transition(<#T##t: AnyTransition##AnyTransition#>)
-                }
-            } else {
-                HStack(spacing: 0){
-                    ForEach(tabItems, id: \.self) { tab in
-                        TabBarButton(selected: $selected, tabItem: tab)
-                            //Add a Spacer to the HStack so long as we have tab items
-                        if tab != tabItems.last {
-                            Spacer()
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 26)
-                    .frame(maxWidth: .infinity,minHeight: tabBarButtonHeight,
-                           maxHeight: .infinity,
-                           alignment: .bottom)//set mininum size of Icon frame
-                    .background(Color.white)
-                    
-                }.onAppear{
-                    withAnimation(.interactiveSpring(response: 0.45, dampingFraction: 0.35, blendDuration: 0.25)){
-                        animatePath.toggle()
-                    }
-                }
-                
-                    //7 add a background and shadow to show a distance tabBar
-                    // the shadow is added to the icons as well
-                    // next the HStack and apply the background and shadow to the parent HStack if you wanted flat icons
-                
-                .clipShape(TabBasinView(gutter: tabBarButtonHeight * 1.4,
-                                        valley:  tabBarButtonHeight * 0.8,
-                                        position: animatePath ? -100 : 0,
-                                        animate: $showNewMediaItems)
-                )
-//                .background(
-//                    TabBasinView(gutter: tabBarButtonHeight * 1.4,
-//                                 valley:  tabBarButtonHeight * 0.8,
-//                                 position: animatePath ? -100 : 0,
-//                                 animate: $showNewMediaItems)
-//                )
-                    //overlay hiding buttons, but only way to see the APEX curve flip.
-                    //                .overlay(
-                    //                    TabBasinView(gutter: tabBarButtonHeight * 0.8,
-                    //                                 valley:  tabBarButtonHeight,
-                    //                                 positionY: $buttonPosition )
-                    //                        .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.2), radius: 1,
-                    //                                x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
-                    //                                y: -1.5)
-                    //                        .foregroundColor(Color.white)
-                    //
-                    //                )
-                
-                    //.ignoresSafeArea(.all, edges: .bottom)
-            }
+            
+                //7 add a background and shadow to show a distance tabBar
+                // the shadow is added to the icons as well
+                // next the HStack and apply the background and shadow to the parent HStack if you wanted flat icons
+                //TODO lift to a AnimatableModifier?
+            
+                //                .background(
+                //                    TabBasinView(gutter: tabBarButtonHeight * 1.4,
+                //                                 valley:  tabBarButtonHeight * 0.8,
+                //                                 position: animatePath ? -100 : 0,
+                //                                 animate: $showNewMediaItems)
+                //                )
+                //overlay hiding buttons, but only way to see the APEX curve flip.
+                //                .overlay(
+                //                    TabBasinView(gutter: tabBarButtonHeight * 0.8,
+                //                                 valley:  tabBarButtonHeight,
+                //                                 positionY: $buttonPosition )
+                //                        .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.2), radius: 1,
+                //                                x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
+                //                                y: -1.5)
+                //                        .foregroundColor(Color.white)
+                //
+                //                )
+            
+                //.ignoresSafeArea(.all, edges: .bottom)
+            
         }
             //frame height doesn't stay consistant after the NewButton moves in the Y direction, haveing to set background color, but as their is a animation
         .frame(height: UIApplication.shared.windows.first?.frame.height)

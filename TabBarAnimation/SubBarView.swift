@@ -9,19 +9,22 @@ import SwiftUI
 
 struct SubBarView: View {
     let subItems: [TabItem] = [
-        TabItem(systemImageName: "folder", "Browse"),
-        TabItem(systemImageName: "wrench.and.screwdriver", "Log Support"),
-        TabItem(systemImageName: "video", "Record"),
+        TabItem(tabIcon: .Browse, "Browse"),
+        TabItem(tabIcon: .LogSupport, "Log Support"),
+        TabItem(tabIcon: .Video, "Record"),
+        TabItem(tabIcon: .Chart, "Stats")
     ]
     @State private var selected:String = "None"
+    var namespace: Namespace.ID
     var image = Image("arrow.triangle.merge.fill")
     var body: some View {
         IconBar(items: subItems,
                 tabBarButtonStyle: TabBarButtonStyle(width: 70,
                                                      height: tabBarButtonHeight,
-                                                     color: .white,
-                                                     padding: .horizontal),
-                selected: $selected)
+                                                     color: .white),
+                selected: $selected,
+                namespace: namespace
+        )
         
     }
 }
