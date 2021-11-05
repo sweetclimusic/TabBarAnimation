@@ -47,7 +47,7 @@ struct IconBar: View {
                 TabBarButton(selected: $selected, tabItem: tab)
                 //Add a Spacer to the HStack so long as we have tab items
                 if tab != items.last {
-                    Spacer(minLength: 0)
+                   // Spacer(minLength: 0)
                 }
             }
             .modifier(tabBarButtonStyle)

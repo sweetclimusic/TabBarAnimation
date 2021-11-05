@@ -40,17 +40,27 @@ struct Home: View {
         TabItem(systemImageName: "arrow.triangle.merge", "Merge"),
         TabItem(systemImageName: "person", "Profile")
     ]
+    
+    let tabViewBGColor: [String:Color] = [
+        "Home": Color.gray.opacity(0.33),
+        "Share": Color.purple,
+        "Merge": Color.yellow,
+        "Profile": Color.blue
+    ]
+    
     @State private var selected:String = "Home"
     @State var showNewMediaItems: Bool = false
+    @State var animatePath: Bool = false
     @State var buttonRotation: Double = 0
     @State var buttonPosition: CGFloat = 0
-    
+    let softGray: Color = Color.gray.opacity(0.33)
         //Defined to hide the default tabbar yet allows programmable switching between tabitems
     init() {
         UITabBar.appearance().isHidden = true
     }
     var body: some View {
         VStack(spacing: 0) {
+            Spacer()
                 // MARK: Note
                 /// accepted type for a Tabviews are Text and Image. All other types are assigned but not reneder
                 /// We can use our custom type to allow programmable switching of tabs
@@ -80,7 +90,7 @@ struct Home: View {
                             .frame(width: tabBarButtonHeight,
                                    height: tabBarButtonHeight)
                             .position(x:globalCoord.width * 0.5,
-                                      y:tabBarTop * 0.9)
+                                      y:tabBarTop * 0.98 )
                     }
                 }
             }
@@ -92,7 +102,7 @@ struct Home: View {
                         .padding(.horizontal, 10)
                         .padding(.top)
                         .opacity(buttonPosition < 50 ? 1:0)
-                        .transition(<#T##t: AnyTransition##AnyTransition#>)
+                        //.transition(<#T##t: AnyTransition##AnyTransition#>)
                 }
             } else {
                 HStack(spacing: 0){
@@ -104,70 +114,56 @@ struct Home: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .frame(width: .infinity ,height: tabBarButtonHeight,
+                    .padding(.bottom, 26)
+                    .frame(maxWidth: .infinity,minHeight: tabBarButtonHeight,
+                           maxHeight: .infinity,
                            alignment: .bottom)//set mininum size of Icon frame
+                    .background(Color.white)
                     
-                    
+                }.onAppear{
+                    withAnimation(.interactiveSpring(response: 0.45, dampingFraction: 0.35, blendDuration: 0.25)){
+                        animatePath.toggle()
+                    }
                 }
-                .frame(height: tabBarButtonHeight, alignment: .bottom)
-                    // padding on devices with no safe area
-                .padding(.horizontal, 0)
-                .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom == 0 ? 10 : 0)
+                
                     //7 add a background and shadow to show a distance tabBar
                     // the shadow is added to the icons as well
                     // next the HStack and apply the background and shadow to the parent HStack if you wanted flat icons
-                .background(Color.white)
-                .clipShape(
-                    TabBasinView(gutter: tabBarButtonHeight * 0.4, apex: tabBarButtonHeight )
+                
+                .clipShape(TabBasinView(gutter: tabBarButtonHeight * 1.4,
+                                        valley:  tabBarButtonHeight * 0.8,
+                                        position: animatePath ? -100 : 0,
+                                        animate: $showNewMediaItems)
                 )
-                .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.8), radius: 2,
-                        x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
-                        y: -1)
+//                .background(
+//                    TabBasinView(gutter: tabBarButtonHeight * 1.4,
+//                                 valley:  tabBarButtonHeight * 0.8,
+//                                 position: animatePath ? -100 : 0,
+//                                 animate: $showNewMediaItems)
+//                )
+                    //overlay hiding buttons, but only way to see the APEX curve flip.
+                    //                .overlay(
+                    //                    TabBasinView(gutter: tabBarButtonHeight * 0.8,
+                    //                                 valley:  tabBarButtonHeight,
+                    //                                 positionY: $buttonPosition )
+                    //                        .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.2), radius: 1,
+                    //                                x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/,
+                    //                                y: -1.5)
+                    //                        .foregroundColor(Color.white)
+                    //
+                    //                )
                 
-                
-                    //                        .clipShape(
-                    //                            TabBasinView(gutter: tabBarButtonHeight * 0.6, apex: tabBarButtonHeight )
-                    //                        )
-                    //                        .background(
-                    //                            Color(.gray)
-                    //                                .opacity(0.2)
-                    //                        )
-                
+                    //.ignoresSafeArea(.all, edges: .bottom)
             }
-            
-                //        .clipShape(
-                //            TabBasinView(gutter: 35, apex: 50)
-                //        )
-                //        //TODO: not quite right, missing button now?
-                //        .frame(width: .infinity, height: tabBarButtonHeight, alignment: .bottom)
-                //        .background(
-                //            Color(.gray)
-                //            .opacity(0.2)
-                //        )
-                //.ignoresSafeArea(.all, edges: .bottom)
-                //
-            
-                //MARK: Things I want from Geometry Reader, I want to get the bottom of the Tab view or the top of the custom Tabbar and it's mid point to place the NewMedia Button relative to it
-                //                GeometryReader{ reader in
-                //                    let globalCoord = reader.frame(in: .global)
-                //                        /// positioning the Plus button correctly requires a ZStack
-                //                        /// to layer the new button on top of the tab bar
-                //                    HStack {
-                //                        NewMediaButton(rotation:$buttonRotation,
-                //                                       positionY: $buttonPosition,
-                //                                       active: $showNewMediaItems
-                //                        )
-                //
-                //                            .frame(width: tabBarButtonHeight,
-                //                                   height: tabBarButtonHeight)
-                //                            .position(x:globalCoord.width * 0.5,
-                //                                      y:globalCoord.height - (tabBarTop * 2))
-                //
-                //                    }
-                //                }.frame(width: tabBarButtonHeight,
-                //                        height: tabBarButtonHeight)
-            
         }
+            //frame height doesn't stay consistant after the NewButton moves in the Y direction, haveing to set background color, but as their is a animation
+        .frame(height: UIApplication.shared.windows.first?.frame.height)
+        .background(
+            tabViewBGColor[selected]?
+                .animation(.none)
+        )
+        .ignoresSafeArea()
+        
     }
 }
 

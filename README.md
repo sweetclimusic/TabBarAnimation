@@ -64,5 +64,7 @@ when creating the animation for the new button, I had two states of the button t
 
 // Remaining Steps
 - 1. Animate path of arch to follow button
+    - a. nested Submenu view height restricted by georeader, unable to expand clipshape height.
+    - b. look at adding menu item to clipshap( although I thought this was already the case.)
 - 2. Scale, opacity, and position animation for SubView icons
 - 3. Set Offset of SubView icons 
