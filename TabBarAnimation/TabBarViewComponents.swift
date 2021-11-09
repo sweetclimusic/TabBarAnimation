@@ -12,7 +12,7 @@ struct TabBarButton: View {
     var tabItem: TabItem
     var body: some View {
         Button(action: {
-            withAnimation(.easeInOut(duration: 0.5)){
+            withAnimation(.easeInOut(duration: coreAnimationDuration)){
                 selected = tabItem.name
             }
         },
@@ -29,6 +29,7 @@ struct TabBarButton: View {
 
 struct NewMediaButton: View {
     var buttonSize: CGFloat = 56
+    @ObservedObject var animationProgress: AnimationProgress
     @Binding var rotation: Double
     @Binding var positionY: CGFloat
     @Binding var active: Bool
@@ -56,10 +57,12 @@ struct NewMediaButton: View {
             rotation = newValue.first
             positionY  = newValue.second.first
                 // track the stages of our animation
+            animationProgress.animationYProsition = newValue.second.first
+            animationProgress.animationPercentage = newValue.second.second
             pct  = newValue.second.second
         }
     }
-    @State private var firstSwitch: Bool = false
+    
     var body: some View {
         let drop = tabBarButtonHeight * 0.5
         Button(action: {
@@ -68,15 +71,16 @@ struct NewMediaButton: View {
               //  .spring(response: 0.21, dampingFraction: 1, blendDuration: 0.8):
               // MARK: these magic numbers brought to you by https://cubic-bezier.com/#1,.64,0,1.45 when you need a cubic-bezier animation, use https://cubic-bezier.com
                 active ?
-                .timingCurve(1, 0.64, 0, 2.75,duration: 0.8):
-                .easeOut(duration: 0.5)
+                .timingCurve(1, 0.64, 0, 2.75, duration: 0.8):
+                .easeOut(duration: coreAnimationDuration)
             ){
                 active.toggle()
+                animationProgress.toggle()
                 rotation = active ? 135 : -270
-                positionY = active ? drop : -(drop)
+                positionY = active ? (drop * 3) : -(drop)
                 //Spring didn't quite fit, so manually reset to start position
                 pct = active ? 1 : 0
-                updatePosition(percentage: pct, duration: 0.5)
+                updatePosition(percentage: pct, duration: coreAnimationDuration)
             }
         }, label: {
             Image(systemName: "plus")
@@ -105,37 +109,6 @@ struct NewMediaButton: View {
     
 }
 
-struct TransformButtonOffset: GeometryEffect {
-    var offsetPositionY : CGFloat
-    var pct: CGFloat
-    let origin: CGFloat
-    
-    init(offsetY: CGFloat, percent pct: CGFloat, origin: CGFloat) {
-        self.offsetPositionY = offsetY
-        self.pct = pct
-        self.origin = origin
-    }
-    var animatableData: AnimatablePair<CGFloat,CGFloat> {
-        get{
-            return AnimatableData(offsetPositionY,pct)
-        }
-        set {
-            self.offsetPositionY = newValue.first
-            self.pct = newValue.second
-        }
-    }
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        var transformY: CGFloat = origin
-        if pct >= 0 {
-            print(pct)
-            print(offsetPositionY)
-            transformY = origin
-        }
-        let transform: CGAffineTransform = CGAffineTransform(translationX: 0, y: transformY)
-        return ProjectionTransform(transform)
-        
-    }
-}
 struct TabBarView_Previews: PreviewProvider {
     static var previews: some View {
         Home()

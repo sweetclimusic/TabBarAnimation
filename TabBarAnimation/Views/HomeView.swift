@@ -50,29 +50,33 @@ struct Home: View {
         "Profile": Color.blue
     ]
     
-    @State private var selected:String = "Home"
+    
     @State var showNewMediaItems: Bool = false
     @State var animatePath: Bool = false
     @State var buttonRotation: Double = 0
     @State var buttonPosition: CGFloat = 0
+    @StateObject var animationProgress = AnimationProgress()
+    @State private var selected:String = "Home"
+    @State private var tabBarTop: CGFloat = 0
     let softGray: Color = Color.gray.opacity(0.33)
         //Defined to hide the default tabbar yet allows programmable switching between tabitems
     init() {
         UITabBar.appearance().isHidden = true
     }
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
             Spacer()
                 // MARK: Note
                 /// accepted type for a Tabviews are Text and Image. All other types are assigned but not reneder
                 /// We can use our custom type to allow programmable switching of tabs
             GeometryReader{ reader in
                 let globalCoord = reader.frame(in: .global)
-                let tabBarTop = globalCoord.maxY
+                self.tabBarTop = globalCoord.maxY
                 
                 ZStack {
                     HStack(spacing: 0) {
                         TabView(selection: $selected){
+                            //TODO: add a georeader around each icon to know it's center
                             SolidTabView(color: .gray,
                                          tab: tabItems[0].name)
                             SolidTabView(color: .purple,
@@ -89,8 +93,9 @@ struct Home: View {
                         if showNewMediaItems {
                                 // offset and opacity not currently tracked as animatable
                             withAnimation{
+                                    //TODO: add a georeader around each icon to know it's center
                                 SubBarView(namespace: TabMenuID)
-                                //TODO : device has a safearea inset or not, adjust offset
+                                //TODO: device has a safearea inset or not, adjust offset
                                     .offset(y: buttonPosition < 50 ? -100 : 0)
                                     .padding(.horizontal, 0)
                                     .padding(.top)
@@ -98,33 +103,33 @@ struct Home: View {
                                     //.transition(<#T##t: AnyTransition##AnyTransition#>)
                             }
                         } else {
-                            withAnimation(
-                                .interactiveSpring(
-                                    response: 0.45,
-                                    dampingFraction: 0.35,
-                                    blendDuration: 0.25)) {
-                                   MenuBarView(
-                                    animatePath: $animatePath,
-                                    buttonPosition: $buttonPosition,
-                                    selected: $selected,
-                                    endAnimation: buttonPosition > 50 ? true : false,
-                                    namespace: TabMenuID
-                                   )
-                                }
+                            MenuBarView(
+                                selected: $selected,
+                                endAnimation: buttonPosition > 50 ? true : false,
+                                namespace: TabMenuID
+                            ).environmentObject(animationProgress)
                         }
                     }
-                    HStack {
-                        NewMediaButton(rotation:$buttonRotation,
-                                       positionY: $buttonPosition,
-                                       active: $showNewMediaItems
-                        )
-                        
-                            .frame(width: tabBarButtonHeight,
-                                   height: tabBarButtonHeight)
-                            .position(x:globalCoord.width * 0.5,
-                                      y:tabBarTop * 0.84 )
-                    }
+                    
                 }
+            }
+            ZStack(alignment:
+                    Alignment(horizontal: .center,
+                              vertical: .bottom)
+                   {
+                NewMediaButton(
+                    animationProgress: animationProgress,
+                    rotation: $buttonRotation,
+                    positionY: $buttonPosition,
+                    active: $showNewMediaItems
+                )
+                
+                    .frame(width: tabBarButtonHeight,
+                           height: tabBarButtonHeight)
+                    .position(x:globalCoord.width * 0.5,
+                              y:
+                                tabBarTop * 0.84 )
+                    .edgesIgnoringSafeArea(.all)
             }
             
                 //7 add a background and shadow to show a distance tabBar

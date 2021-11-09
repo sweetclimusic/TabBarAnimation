@@ -11,6 +11,7 @@ import CoreGraphics
 let newMediaButtonSize: CGSize = CGSize(width: 56, height: 56)
 let tabBarButtonHeight: CGFloat = 50
 let iconBarPadding: CGFloat = 20
+let coreAnimationDuration: CGFloat = 0.5
 
 //UNUSED, purpose verboseness if you want to know where the Constants are coming from.
 class UIConstants {

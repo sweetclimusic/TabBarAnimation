@@ -14,10 +14,10 @@ struct MenuBarView: View {
         TabItem(tabIcon: .Merge, "Merge"),
         TabItem(tabIcon: .Profile, "Profile")
     ]
-    @Binding var animatePath: Bool
-    @Binding var buttonPosition: CGFloat
+    @EnvironmentObject var animationProgress: AnimationProgress
     @Binding var selected: String
-    @State var endAnimation: Bool
+    @State var value: CGFloat = 0
+    @State var resetAnimation: Bool
     var namespace: Namespace.ID
     
     var body: some View {
@@ -28,6 +28,7 @@ struct MenuBarView: View {
                     .matchedGeometryEffect(
                         id: "item\(String(describing: index))",
                         in: namespace)
+                    .transition(.opacity)
                 if tabItems[index] != tabItems.last {
                     Spacer()
                 }
@@ -37,18 +38,23 @@ struct MenuBarView: View {
             .frame(height: tabBarButtonHeight * 2,
                    alignment: .bottom)//set mininum size of Icon frame
                                       //.background(Color.white)
-            
-            
         }
-        .background(
-            TabBasinView(gutter: tabBarButtonHeight * 1.4,
-                         valley:  tabBarButtonHeight * 0.8,
-                         position: animatePath ? -100 : 0,
-                         buttonPosition: $buttonPosition,
-                         animate: $endAnimation)
-                .foregroundColor(Color.white)
-        )
+        .modifier(AnimatingPathValley(height: value, resetAnimation ))
+        .onAppear{
+            withAnimation(
+                .interactiveSpring(
+                    response: 0.45,
+                    dampingFraction: 0.35,
+                    blendDuration: coreAnimationDuration)) {
+                        self.value = animationProgress.animationIsActive ? 0 : -100
+                        self.resetAnimation =
+                        abs(self.value)
+                            .truncatingRemainder(dividingBy: 100) == 0
+                        ? true : false
+                    }
+        }
         .ignoresSafeArea()
+        
     }
 }
 

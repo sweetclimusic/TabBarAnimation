@@ -10,21 +10,7 @@ import SwiftUI
 struct TabBasinView: Shape {
     var gutter: CGFloat
     var valley: CGFloat
-    var position: CGFloat = 0
-    @Binding var buttonPosition: CGFloat
-    @Binding var animate: Bool
-    @State private var pct: CGFloat = 0
-    var animatableData: AnimatablePair<CGFloat,CGFloat> {
-        get{
-            pct = animate ? 1 : 0
-            return AnimatablePair(position,pct)
-        }
-        set{
-            position  = newValue.first
-                // track the stages of our animation
-            pct  = newValue.second
-        }
-    }
+    var position: CGFloat
     
     func path(in rect: CGRect) -> Path {
         let curveStartX = CGPoint(x: (rect.midX - gutter), y: 0)
@@ -53,6 +39,32 @@ struct TabBasinView: Shape {
         return path
     }
     
+}
+
+
+//Shape Animatable Modifier
+struct AnimatingPathValley: AnimatableModifier {
+    var height: CGFloat = 0
+    @State var reset: Bool
+    var animatableData: CGFloat {
+        get { height }
+        set {
+            if reset { height = CGFloat.zero }
+            else {
+                height = newValue
+            }
+        }
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .background(
+                TabBasinView(
+                    gutter: tabBarButtonHeight * 1.4,
+                    valley: tabBarButtonHeight * 0.8,
+                    position: height))
+            .foregroundColor(Color.white)
+    }
 }
 
 struct TabBasinView_Previews: PreviewProvider {

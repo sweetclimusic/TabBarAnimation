@@ -16,6 +16,7 @@
 		57B6794326B9780700151B2F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794226B9780700151B2F /* HomeView.swift */; };
 		57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */; };
 		57B6794726BAF13400151B2F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794626BAF13400151B2F /* Constants.swift */; };
+		CC0F0081273A8351000D5D7F /* AnimationProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F0080273A8351000D5D7F /* AnimationProgress.swift */; };
 		CCCB930D273550A500D9BCD7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB930C273550A500D9BCD7 /* MenuBarView.swift */; };
 		CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD2991D2719C57F003CF50F /* TabBasinView.swift */; };
 /* End PBXBuildFile section */
@@ -33,6 +34,7 @@
 		57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewComponents.swift; sourceTree = "<group>"; };
 		57B6794626BAF13400151B2F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		57B6794826BBDFAB00151B2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CC0F0080273A8351000D5D7F /* AnimationProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationProgress.swift; sourceTree = "<group>"; };
 		CCCB930C273550A500D9BCD7 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		CCD2991D2719C57F003CF50F /* TabBasinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBasinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,17 +79,15 @@
 		57B6793226B977D700151B2F /* TabBarAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				CC0F007F273A82F4000D5D7F /* Model */,
 				57B6793326B977D700151B2F /* TabBarAnimationApp.swift */,
 				57B6793526B977D700151B2F /* ContentView.swift */,
 				57B6793726B977DF00151B2F /* Assets.xcassets */,
 				57B6793C26B977DF00151B2F /* Info.plist */,
 				57B6793926B977DF00151B2F /* Preview Content */,
-				57B6794226B9780700151B2F /* HomeView.swift */,
-				57754F7026BD9B690028F139 /* SubBarView.swift */,
+				CC0F007E273A82C8000D5D7F /* Views */,
 				57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */,
-				57B6794626BAF13400151B2F /* Constants.swift */,
-				CCD2991D2719C57F003CF50F /* TabBasinView.swift */,
-				CCCB930C273550A500D9BCD7 /* MenuBarView.swift */,
+				CC0F007D273A829E000D5D7F /* Utilities */,
 			);
 			path = TabBarAnimation;
 			sourceTree = "<group>";
@@ -98,6 +98,33 @@
 				57B6793A26B977DF00151B2F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CC0F007D273A829E000D5D7F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				57B6794626BAF13400151B2F /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		CC0F007E273A82C8000D5D7F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57B6794226B9780700151B2F /* HomeView.swift */,
+				57754F7026BD9B690028F139 /* SubBarView.swift */,
+				CCD2991D2719C57F003CF50F /* TabBasinView.swift */,
+				CCCB930C273550A500D9BCD7 /* MenuBarView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CC0F007F273A82F4000D5D7F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CC0F0080273A8351000D5D7F /* AnimationProgress.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +201,7 @@
 				57B6794326B9780700151B2F /* HomeView.swift in Sources */,
 				57B6793626B977D700151B2F /* ContentView.swift in Sources */,
 				57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */,
+				CC0F0081273A8351000D5D7F /* AnimationProgress.swift in Sources */,
 				CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */,
 				57754F7426BD9F940028F139 /* IconBar.swift in Sources */,
 				57B6793426B977D700151B2F /* TabBarAnimationApp.swift in Sources */,
