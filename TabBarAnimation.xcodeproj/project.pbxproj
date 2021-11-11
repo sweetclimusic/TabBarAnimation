@@ -17,6 +17,8 @@
 		57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794426B99A8A00151B2F /* TabBarViewComponents.swift */; };
 		57B6794726BAF13400151B2F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6794626BAF13400151B2F /* Constants.swift */; };
 		CC0F0081273A8351000D5D7F /* AnimationProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F0080273A8351000D5D7F /* AnimationProgress.swift */; };
+		CC0F0087273C0F15000D5D7F /* AnimationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F0086273C0F15000D5D7F /* AnimationViewModel.swift */; };
+		CC0F0089273C8BF7000D5D7F /* AnimationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F0088273C8BF7000D5D7F /* AnimationState.swift */; };
 		CCCB930D273550A500D9BCD7 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCB930C273550A500D9BCD7 /* MenuBarView.swift */; };
 		CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD2991D2719C57F003CF50F /* TabBasinView.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +37,8 @@
 		57B6794626BAF13400151B2F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		57B6794826BBDFAB00151B2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CC0F0080273A8351000D5D7F /* AnimationProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationProgress.swift; sourceTree = "<group>"; };
+		CC0F0086273C0F15000D5D7F /* AnimationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationViewModel.swift; sourceTree = "<group>"; };
+		CC0F0088273C8BF7000D5D7F /* AnimationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationState.swift; sourceTree = "<group>"; };
 		CCCB930C273550A500D9BCD7 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		CCD2991D2719C57F003CF50F /* TabBasinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBasinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +83,7 @@
 		57B6793226B977D700151B2F /* TabBarAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				CC0F0085273C02B9000D5D7F /* ViewModel */,
 				CC0F007F273A82F4000D5D7F /* Model */,
 				57B6793326B977D700151B2F /* TabBarAnimationApp.swift */,
 				57B6793526B977D700151B2F /* ContentView.swift */,
@@ -123,8 +128,17 @@
 			isa = PBXGroup;
 			children = (
 				CC0F0080273A8351000D5D7F /* AnimationProgress.swift */,
+				CC0F0088273C8BF7000D5D7F /* AnimationState.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		CC0F0085273C02B9000D5D7F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC0F0086273C0F15000D5D7F /* AnimationViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,10 +210,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC0F0089273C8BF7000D5D7F /* AnimationState.swift in Sources */,
 				CCCB930D273550A500D9BCD7 /* MenuBarView.swift in Sources */,
 				57B6794726BAF13400151B2F /* Constants.swift in Sources */,
 				57B6794326B9780700151B2F /* HomeView.swift in Sources */,
 				57B6793626B977D700151B2F /* ContentView.swift in Sources */,
+				CC0F0087273C0F15000D5D7F /* AnimationViewModel.swift in Sources */,
 				57B6794526B99A8A00151B2F /* TabBarViewComponents.swift in Sources */,
 				CC0F0081273A8351000D5D7F /* AnimationProgress.swift in Sources */,
 				CCD2991E2719C57F003CF50F /* TabBasinView.swift in Sources */,

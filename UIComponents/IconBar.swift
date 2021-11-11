@@ -28,7 +28,7 @@ struct TabBarButtonStyle: ViewModifier{
         content
             .frame(
                 width: width,
-                height: height)//set mininum size of Icon frame
+                height: height) //set mininum size of Icon frame
             .background(
                 Circle()
                     .foregroundColor(color)
@@ -36,7 +36,6 @@ struct TabBarButtonStyle: ViewModifier{
             )
             .padding(padding,paddingAmount)
     }
-    
 }
 
 struct IconBar: View {
@@ -45,19 +44,17 @@ struct IconBar: View {
     @Binding var selected: String
     var namespace: Namespace.ID
     var body: some View {
-        HStack(spacing: 0){
+        HStack(spacing: 0) {
             ForEach(items, id: \.self) { tab in
                 let firstOrLast = [items.first, items.last].contains(tab)
                 let index = items.firstIndex(of: tab)!
                 TabBarButton(selected: $selected, tabItem: tab)
                     .modifier(tabBarButtonStyle)
-                //matchedGeometryEffect matches the position of a object with the same ID in the animation namespace
+                    //matchedGeometryEffect matches the position of a object with the same ID in the animation namespace
                     .matchedGeometryEffect(
                         id: "item\(String(describing: index))",
                         in: namespace
                     )
-                    
-                    
                     //adjust padding and offset first and last items
                     .padding(.horizontal,
                              firstOrLast ? .zero : iconBarPadding)

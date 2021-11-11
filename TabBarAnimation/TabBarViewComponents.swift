@@ -11,25 +11,25 @@ struct TabBarButton: View {
     @Binding var selected: String
     var tabItem: TabItem
     var body: some View {
-        Button(action: {
-            withAnimation(.easeInOut(duration: coreAnimationDuration)){
-                selected = tabItem.name
-            }
-        },
-               label: {
-            tabItem.image
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 28, height: 28)
-                .foregroundColor(selected == tabItem.name ? .pink : .gray)
-        })
+        Button(
+            action: {
+                withAnimation(.easeInOut(duration: coreAnimationDuration)){
+                    selected = tabItem.name
+                }
+            },label: {
+                tabItem.image
+                    .resizable()
+                    .renderingMode(.template)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 28, height: 28)
+                    .foregroundColor(selected == tabItem.name ? .pink : .gray)
+            })
     }
 }
 
 struct NewMediaButton: View {
     var buttonSize: CGFloat = 56
-    @ObservedObject var animationProgress: AnimationProgress
+    @EnvironmentObject var animationProgress: AnimationProgress
     @Binding var rotation: Double
     @Binding var positionY: CGFloat
     @Binding var active: Bool
@@ -51,9 +51,9 @@ struct NewMediaButton: View {
     var animatableData: AnimatableTransformData {
         get{ AnimatableTransformData(rotation,AnimatablePair(positionY,pct)) }
         set{
-            //MARK: CodeSmell
-            //anything more complicated and AnimatableTransformData would need to be a Object with apporiate getter methods instead of accessing by "newValue.second.first"
-            //aka. AnimatableTransformData.AnimatablePair.CGFloat == newValue.second.first
+                //MARK: CodeSmell
+                //anything more complicated and AnimatableTransformData would need to be a Object with apporiate getter methods instead of accessing by "newValue.second.first"
+                //aka. AnimatableTransformData.AnimatablePair.CGFloat == newValue.second.first
             rotation = newValue.first
             positionY  = newValue.second.first
                 // track the stages of our animation
@@ -67,18 +67,18 @@ struct NewMediaButton: View {
         let drop = tabBarButtonHeight * 0.5
         Button(action: {
             withAnimation(
-              // .interactiveSpring(response: 0.4, dampingFraction: 0.41, blendDuration: 0.8):
-              //  .spring(response: 0.21, dampingFraction: 1, blendDuration: 0.8):
-              // MARK: these magic numbers brought to you by https://cubic-bezier.com/#1,.64,0,1.45 when you need a cubic-bezier animation, use https://cubic-bezier.com
+                // .interactiveSpring(response: 0.4, dampingFraction: 0.41, blendDuration: 0.8):
+                //  .spring(response: 0.21, dampingFraction: 1, blendDuration: 0.8):
+                // MARK: these magic numbers brought to you by https://cubic-bezier.com/#1,.64,0,1.45 when you need a cubic-bezier animation, use https://cubic-bezier.com
                 active ?
-                .timingCurve(1, 0.64, 0, 2.75, duration: 0.8):
-                .easeOut(duration: coreAnimationDuration)
+                    .timingCurve(1, 0.64, 0, 2.75, duration: 0.8):
+                        .easeOut(duration: coreAnimationDuration)
             ){
                 active.toggle()
                 animationProgress.toggle()
                 rotation = active ? 135 : -270
                 positionY = active ? (drop * 3) : -(drop)
-                //Spring didn't quite fit, so manually reset to start position
+                    //Spring didn't quite fit, so manually reset to start position
                 pct = active ? 1 : 0
                 updatePosition(percentage: pct, duration: coreAnimationDuration)
             }

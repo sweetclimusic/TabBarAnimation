@@ -26,8 +26,6 @@ struct TabBasinView: Shape {
         path.addRect(rect)
         // move to center of rect and form a dip by settign the control in the +Y axis, We will animate this apex for the slingshot withAnimatable and using a spring curve.
         path.move(to: curveStartX )
-        //didn't like smoothness on QuadCurve,
-        //path.addQuadCurve(to: dipEnd, control: control)
         //add two bezierPath
     
         path.addCurve(to: dipStart,
@@ -43,15 +41,22 @@ struct TabBasinView: Shape {
 
 
 //Shape Animatable Modifier
+typealias CompletionHandler = () -> Void
 struct AnimatingPathValley: AnimatableModifier {
     var height: CGFloat = 0
-    @State var reset: Bool
+    private var target: CGFloat = -100.0
+    private var completion:  CompletionHandler
+    init(height: CGFloat,completion: @escaping CompletionHandler){
+        self.height = height
+        self.completion = completion
+    }
+    
     var animatableData: CGFloat {
         get { height }
         set {
-            if reset { height = CGFloat.zero }
-            else {
-                height = newValue
+            height = newValue
+            if newValue < target {
+                completion()
             }
         }
     }

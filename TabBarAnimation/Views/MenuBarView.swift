@@ -17,44 +17,60 @@ struct MenuBarView: View {
     @EnvironmentObject var animationProgress: AnimationProgress
     @Binding var selected: String
     @State var value: CGFloat = 0
-    @State var resetAnimation: Bool
     var namespace: Namespace.ID
     
     var body: some View {
-        HStack(spacing: 0){
-            ForEach(tabItems.indices, id: \.self) { index in
-                TabBarButton(selected: $selected, tabItem: tabItems[index])
-                    //Add a Spacer to the HStack so long as we have tab items
-                    .matchedGeometryEffect(
-                        id: "item\(String(describing: index))",
-                        in: namespace)
-                    .transition(.opacity)
-                if tabItems[index] != tabItems.last {
-                    Spacer()
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 26)
-            .frame(height: tabBarButtonHeight * 2,
-                   alignment: .bottom)//set mininum size of Icon frame
-                                      //.background(Color.white)
-        }
-        .modifier(AnimatingPathValley(height: value, resetAnimation ))
-        .onAppear{
-            withAnimation(
-                .interactiveSpring(
-                    response: 0.45,
-                    dampingFraction: 0.35,
-                    blendDuration: coreAnimationDuration)) {
-                        self.value = animationProgress.animationIsActive ? 0 : -100
-                        self.resetAnimation =
-                        abs(self.value)
-                            .truncatingRemainder(dividingBy: 100) == 0
-                        ? true : false
+        ZStack {
+            HStack(spacing: 0) {
+                ForEach(tabItems.indices, id: \.self) { index in
+                    TabBarButton(selected: $selected, tabItem: tabItems[index])
+                        //Add a Spacer to the HStack so long as we have tab items
+                    if tabItems[index] != tabItems.last {
+                        Spacer()
                     }
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 26)
+                .frame(height: tabBarButtonHeight * 2,
+                       alignment: .bottom)
+            }
+            .foregroundColor(Color.white)
+            .modifier(AnimatingPathValley(
+                height: value,
+                completion: {
+                    DispatchQueue.main.async {
+                        value = 0.0
+                    }
+                }
+            ))
+            .animation(
+                .spring(
+                    response: 0.5,
+                    dampingFraction: 0.35,
+                    blendDuration: 0.25).delay(0.25)
+            )
+            .onAppear{
+                value = animationProgress.animationStateHeight()
+            }
+            .ignoresSafeArea()
+            //MARK: Phathom elements for GeometryMatching
+            HStack(spacing: 0){
+                ForEach(tabItems.indices, id: \.self) { index in
+                    Circle()
+                        .frame(width: 28, height: 28)
+                        .opacity(0)
+                        .matchedGeometryEffect(
+                            id: "item\(String(describing: index))",
+                            in: namespace)
+                    if tabItems[index] != tabItems.last {
+                        Spacer()
+                    }
+                }
+            }.padding(.horizontal, 28)
+                .padding(.bottom, 26)
+                .frame(height: tabBarButtonHeight * 2,
+                       alignment: .bottom)
         }
-        .ignoresSafeArea()
-        
     }
 }
 
