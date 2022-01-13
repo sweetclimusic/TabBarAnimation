@@ -51,9 +51,6 @@ struct NewMediaButton: View {
     var animatableData: AnimatableTransformData {
         get{ AnimatableTransformData(rotation,AnimatablePair(positionY,pct)) }
         set{
-                //MARK: CodeSmell
-                //anything more complicated and AnimatableTransformData would need to be a Object with apporiate getter methods instead of accessing by "newValue.second.first"
-                //aka. AnimatableTransformData.AnimatablePair.CGFloat == newValue.second.first
             rotation = newValue.first
             positionY  = newValue.second.first
                 // track the stages of our animation

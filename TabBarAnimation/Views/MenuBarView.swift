@@ -66,7 +66,8 @@ struct MenuBarView: View {
                         Spacer()
                     }
                 }
-            }.padding(.horizontal, 28)
+            }
+            .padding(.horizontal, 28)
                 .padding(.bottom, 26)
                 .frame(height: tabBarButtonHeight * 2,
                        alignment: .bottom)

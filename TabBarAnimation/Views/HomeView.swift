@@ -88,7 +88,6 @@ struct Home: View {
                     VStack(spacing:0) {
                         Spacer()
                         if showNewMediaItems {
-                                // offset and opacity not currently tracked as animatable
                             withAnimation{
                                 SubBarView(namespace: TabMenuID)
                                     .offset(y: animationProgress.animationYProsition < 50 ? -100 : 0)
@@ -96,7 +95,8 @@ struct Home: View {
                                     .padding(.top)
                                     .opacity(animationProgress.animationYProsition < 50 ? 1:0)
                             }
-                        } else {
+                        }
+                        else {
                             MenuBarView(
                                 selected: $selected,
                                 namespace: TabMenuID

@@ -10,7 +10,7 @@ Not only is this effect beautiful, this is also wonderful UX. Its bold "Plus" bu
 
 What stood out personally  for me about this effect was the discussion by the author in the feedback thread.
 
-> ### 📝 **_TLDR:_**
+### 📝 **_TLDR:_**
 > user1: good luck getting a development team to do it
 > author: I can do it in couple of hours no biggy
 
@@ -44,23 +44,57 @@ Now that we have the quintessential steps needed to recreate this afformentioned
 
 ### Creating a custom tabbar
 
-
-## Animation Walkthrough
-// We will write a custom Tab bar using two sources of truth, 
+We will write a custom Tab bar using two sources of truth,
 //
 // ![Tabbar Exploration](https://cdn.dribbble.com/users/1405777/screenshots/5315582/video.gif)
-// Kavsoft Curved Tabbar
-// https://kavsoft.dev/SwiftUI_2.0/Native_Curved_Tabbar
 
-// 1. First define a Home view, this is view containing a default TabView
-// 2. Define your TabItems
-// 3. Now hide them!
 
-// 1. Create a HomeView with it's main content being a TabView.
+### Steps creating the Tabbar 
+> 1. First define a Home view, this is view containing a default TabView
+> 2. Define your TabItems
+> 3. Now hide them!
+> 4. TODO rest of the steps....
 
-//Animation Breakdown
+![Tabbar Exploration](https://cdn.dribbble.com/users/1405777/screenshots/5315582/video.gif)
 
-when creating the animation for the new button, I had two states of the button to animate, the first being the offsetY and the rotation of the image. where I was able to animate the rotation quite easily as a views rotation angle is animatable by default. swiftUI will animate from one angle to the next for you. Ther problem surfaces when I wanted to animate the offset, changing the offset didn't work.
+> 1. [Kavsoft Curved Tabbar](https://kavsoft.dev/SwiftUI_2.0/Native_Curved_Tabbar)
 
-// Remaining Steps
-- 1. Full write up for talk
+I then use the default TabView and add my custom type buttons and hide the Tabview in the `init()` of *HomeView*.
+Hiding the TabView allows us to now customize the tabbar. But why does this work? 
+
+> ####Here be dragons
+>I found out that it is because SwiftUI Tabview only renders `Text` and `Image` types. 
+Assigning any other type to the TabView doesn't render that types' view.
+>However, you will retain the programmatic access to the view assigned to the Tabview's `Binding <SelectedValue>`.
+Thus a Tabview with anything other that `Text` or `Image` will create a functioning Tabview but with blank controls.
+>This could change at any time and so it is very risky to use in a production app.
+
+
+## Animation Walkthrough
+Most of the animation are very typical, show, hide, and offsets animations. 
+The main animation feature, the bouncing curve path, what do I do there?
+###New Button
+When creating the animation for the new button, I had two states of the button to animate, the first being the offsetY,
+and the rotation of the image.
+
+Where I was able to animate the rotation quite easily as a views' rotation angle is animatable by default.
+SwiftUI will animate from one angle to the next for you. The problem surfaces when I wanted to animate the offset.
+This offset follows an ABCA animation cycle. Don't bealarmed about ABCA, that's more or less achieved with a spring animation.
+But the default spring didn't quite achieve the results I wanted. 
+Instead I used a custom timing curve with applied to a easeOut animation for a snap-back in place effect.
+imply changing the offset didn't work.
+
+Well I was able to figure it out with two sources of truth,
+> 1. [SwiftUI LAb](https://swiftui-lab.com/swiftui-animations-part1/)
+> 2. [Apple Shape tutorial](https://developer.apple.com/tutorials/swiftui/drawing-paths-and-shapes)
+
+### Animation Bounce Breakdown
+
+Using apple Shape tutorial, I learnt that swiftui shapes were done the same way as in UIKit. 
+Simply by defining a Path object, you could render a custom shape from the path
+
+This dipped tabbar is simply a rect path with two Bézier curves added to the center.
+
+
+// gif is reallly realllly slow.
+![Finished Animation](ReadmeImages/finalanimation.gif "loop gif of the final tabbar animation")
