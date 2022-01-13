@@ -94,7 +94,11 @@ Using apple Shape tutorial, I learnt that swiftui shapes were done the same way 
 Simply by defining a Path object, you could render a custom shape from the path
 
 This dipped tabbar is simply a rect path with two Bézier curves added to the center.
+My main breakthrough was swiftui-lab path animation tutorial, I learnt that by using my own custom animation modifier,
+I could track the properties I wanted to allow the swiftui rendering engine to animate from my animation data values.
 
+I created a custom state machine to track the animation states for when I wanted to update the values of the data in the 
+modifier and set the 'tab bin' view to animate with a spring animation.
 
 // gif is reallly realllly slow.
 ![Finished Animation](ReadmeImages/finalanimation.gif "loop gif of the final tabbar animation")
