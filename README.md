@@ -42,21 +42,13 @@ Now that we have the quintessential steps needed to recreate this afformentioned
  
 ## Tabbar Walkthrough
 
-### Creating a custom tabbar
-
-We will write a custom Tab bar using two sources of truth,
-//
-// ![Tabbar Exploration](https://cdn.dribbble.com/users/1405777/screenshots/5315582/video.gif)
-
-
 ### Steps creating the Tabbar 
 > 1. First define a Home view, this is view containing a default TabView
 > 2. Define your TabItems
 > 3. Now hide them!
 > 4. TODO rest of the steps....
 
-![Tabbar Exploration](https://cdn.dribbble.com/users/1405777/screenshots/5315582/video.gif)
-
+###Curved Tabbar
 > 1. [Kavsoft Curved Tabbar](https://kavsoft.dev/SwiftUI_2.0/Native_Curved_Tabbar)
 
 I then use the default TabView and add my custom type buttons and hide the Tabview in the `init()` of *HomeView*.
@@ -100,5 +92,5 @@ I could track the properties I wanted to allow the swiftui rendering engine to a
 I created a custom state machine to track the animation states for when I wanted to update the values of the data in the 
 modifier and set the 'tab bin' view to animate with a spring animation.
 
-// gif is reallly realllly slow.
+
 ![Finished Animation](ReadmeImages/finalanimation.gif "loop gif of the final tabbar animation")
